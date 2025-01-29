@@ -1,35 +1,56 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hall Ticket</title>
-
-  <!-- Favicon -->
+  <title>Render PDF in Webpage</title>
   <link rel="icon" type="image/png" href="./files/Jamia-logo.png">
-
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <style>
-    
+    body {
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f3f4f6;
+    }
+    canvas {
+      border: 1px solid #ddd;
+    }
   </style>
 </head>
-<body class="bg-gray-100 items-center">
+<body>
     <header class="bg-white py-2 px-6 flex justify-between">
         <img src="./files/Jamia-logo.png" alt="Institute Logo" class="h-16 w-h-16">
         <h1 class="text-xl font-semibold mt-26 mx-auto my-auto">Hall Ticket</h1>
     </header>
-  <!-- Container Card for Ticket Display -->
-  <div class="border shadow-lg rounded-lg bg-white w-[90%] max-w-[800px] py-2">
-    
-    <!-- Header Section -->
- 
+  <canvas id="pdf-canvas"></canvas>
 
-    <!-- Embedded PDF -->
-    <embed src="./files/resume_mohammed_sahal (1).pdf (3).pdf" type="application/pdf" width="100%" height="700px" class="rounded-b-lg">
-  
-  </div>
-  
+  <script>
+    const url = './files/resume_mohammed_sahal (1).pdf (3).pdf';  // Provide the PDF path
+
+    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+      pdf.getPage(1).then(function(page) {
+        const canvas = document.getElementById('pdf-canvas');
+        const context = canvas.getContext('2d');
+
+        const viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+
+        page.render(renderContext);
+      });
+    });
+  </script>
+
 </body>
 </html>

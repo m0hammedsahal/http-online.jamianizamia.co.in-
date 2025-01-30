@@ -12,9 +12,10 @@
     body {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: start;
       min-height: 100vh;
       background-color: #f3f4f6;
+      padding-bottom: 20px;
     }
 
     canvas {
@@ -26,32 +27,38 @@
 </head>
 
 <body>
-  <header class="bg-white py-4 px-6 w-full flex items-center justify-between">
-    <img src="./files/Jamia-logo.png" alt="Institute Logo" class="h-16">
-    <h1 class="text-lg font-semibold text-center mx-auto">Hall Ticket</h1>
+  <!-- Responsive Header -->
+  <header class="bg-white py-2 sm:py-4 px-4 w-full flex items-center justify-between">
+    <img src="./files/Jamia-logo.png" alt="Institute Logo" class="h-12 sm:h-16">
+    <h1 class="text-base sm:text-lg font-semibold text-center mx-auto">Hall Ticket</h1>
   </header>
-
-  <div class="mt-4 w-full flex justify-center">
-    <canvas id="pdf-canvas"></canvas>
-  </div>
-
-  <button 
-    onclick="window.print()" 
-    class="mt-6 px-4 py-1 border border-gray-500 rounded-md">
-    Print PDF
-  </button>
+  <section class="px-4 sm:px-10">
+    <div class="mt-4 w-full flex justify-center">
+      <canvas id="pdf-canvas"></canvas>
+    </div>
+  
+    <!-- Footer Section with Print Button -->
+      <button 
+        onclick="window.print()" 
+        class="px-4 py-2 mt-5 text-white bg-blue-500 hover:bg-blue-600 rounded-full shadow">
+        Print PDF
+      </button>
+      <div class="h-10 bg-gray-200 w-full"></div>
+      <img src="./files/eWAY_logo_21_500x300.png" alt="eWay Logo" class="h-8 mt-5 ml-auto">
+  </section>
 
   <script>
-    const url = './files/resume_mohammed_sahal (1).pdf (3).pdf';  // Provide the PDF path
+    const url = './files/nisami.pdf';  // Provide the PDF path
 
     pdfjsLib.getDocument(url).promise.then(function (pdf) {
       pdf.getPage(1).then(function (page) {
         const canvas = document.getElementById('pdf-canvas');
         const context = canvas.getContext('2d');
 
-        const viewport = page.getViewport({ scale: 1 });
+        // Improved PDF quality by increasing the scale
+        const viewport = page.getViewport({ scale: 2 });
         const scaleFactor = Math.min(window.innerWidth / viewport.width, 1);
-        const scaledViewport = page.getViewport({ scale: scaleFactor });
+        const scaledViewport = page.getViewport({ scale: scaleFactor * 2 });
 
         canvas.width = scaledViewport.width;
         canvas.height = scaledViewport.height;
